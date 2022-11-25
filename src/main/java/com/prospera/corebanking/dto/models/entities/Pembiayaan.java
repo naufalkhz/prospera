@@ -16,6 +16,9 @@ public class Pembiayaan implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50, nullable = false)
+    private long nikKtp;
+
     @Column(length = 1, nullable = false)
     private int status;
 

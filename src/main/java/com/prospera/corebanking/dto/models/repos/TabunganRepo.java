@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TabunganRepo extends JpaRepository<Tabungan, Long> {
    Tabungan findByNoRekening(Long noRekening);
+   Tabungan findByNikKtp(Long nikKtp);
 }
