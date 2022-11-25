@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 public class OfficerService {
@@ -25,6 +23,7 @@ public class OfficerService {
 
         System.out.println(officerData);
 
+        //handler duplicate
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
         Officer officer = new Officer();
 
@@ -55,13 +54,13 @@ public class OfficerService {
         return officerRepo.save(officer);
     }
 
-    public Officer findOne (Long id){
+    /*public Officer findOne (Long id){
         Optional<Officer> supplier = officerRepo.findById(id);
         if (!supplier.isPresent()){
             return null;
         }
         return supplier.get();
-    }
+    }*/
 
     public Officer findByNikKaryawan (Long nikKaryawan){
         Officer officer = officerRepo.findByNikKaryawan(nikKaryawan);

@@ -10,48 +10,43 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "officer")
-public class Officer implements Serializable {
+@Table(name = "nasabah")
+@DynamicUpdate
+public class Nasabah implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false, unique = true)
-    private long nikKaryawan;
+    @Column(length = 50, nullable = false)
+    private String nama;
 
-//    @Column(length = 50, nullable = false, unique = true)
     @Column(length = 50, nullable = false)
     private long nikKtp;
 
     @Column(length = 50, nullable = false)
-    private String nama;
-
-//    @Column(length = 50, nullable = false)
-    @Transient
-    @JsonIgnore
     private String email;
 
-//    @Column(length = 50, nullable = false)
-    @Transient
-    @JsonIgnore
+    @Column(length = 50, nullable = false)
     private String password;
 
     @Column(length = 50, nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date tanggalLahir;
+    private String noHP;
 
     @Column(length = 50, nullable = false)
+    private String pekerjaan;
+
+    @Column(length = 250, nullable = false)
     private String alamat;
 
-    @Column(length = 200, nullable = false)
-    private String jabatan;
+    @Column(length = 1, nullable = false)
+    private int flagWarungTepat;
 
-    @Column(length = 100)
-    private String cabang;
+    @Column(length = 50, nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date tanggalBuat;
 
-    @Column
-    private int status;
+//    @Column(length = 50, nullable = false, unique = true)
 
 //    @ManyToMany(mappedBy = "suppliers")
 //    @JsonBackReference
