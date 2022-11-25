@@ -3,6 +3,7 @@ package com.prospera.corebanking.controllers;
 
 import com.prospera.corebanking.dto.models.entities.Officer;
 import com.prospera.corebanking.dto.models.entities.Pembiayaan;
+import com.prospera.corebanking.dto.models.entities.Tabungan;
 import com.prospera.corebanking.dto.request.OfficerData;
 import com.prospera.corebanking.dto.request.PembiayaanData;
 import com.prospera.corebanking.dto.response.ResponseData;
@@ -57,5 +58,34 @@ public class PembiayaanController {
     }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// GET ONE PEMBIAYAAN BY ID /////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping("/{id}")
+    public Pembiayaan findPembiayaanByID(@PathVariable("id") Long id){
+        return pembiayaanService.findOne(id);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    @PutMapping
+    public ResponseEntity<ResponseData<Pembiayaan>> update (@RequestBody @Valid Pembiayaan pembiayaanData, Errors errors){
+
+        System.out.println(pembiayaanData);
+        ResponseData<Pembiayaan> responseData = new ResponseData<>();
+        if (errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+        Pembiayaan pembiayaan = modelMapper.map(pembiayaanData, Pembiayaan.class);
+        responseData.setStatus(true);
+        responseData.setPayload(pembiayaanService.update(pembiayaan));
+        return ResponseEntity.ok(responseData);
+    }
 
 }

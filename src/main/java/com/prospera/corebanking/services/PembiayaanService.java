@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class PembiayaanService {
@@ -55,13 +57,13 @@ public class PembiayaanService {
         return pembiayaanRepo.save(pembiayaan);
     }
 
-    /*public Officer findOne (Long id){
-        Optional<Officer> supplier = officerRepo.findById(id);
-        if (!supplier.isPresent()){
+    public Pembiayaan findOne (Long id){
+        Optional<Pembiayaan> pembiayaan = pembiayaanRepo.findById(id);
+        if (!pembiayaan.isPresent()){
             return null;
         }
-        return supplier.get();
-    }*/
+        return pembiayaan.get();
+    }
 
     /*public Tabungan findByNoRekening (Long noRekening){
         Tabungan tabungan = tabunganRepo.findByNoRekening(noRekening);
@@ -71,9 +73,9 @@ public class PembiayaanService {
         return tabungan;
     }*/
 
-    /*public Pembiayaan update (Pembiayaan pembiayaan){
+    public Pembiayaan update (Pembiayaan pembiayaan) {
         return pembiayaanRepo.save(pembiayaan);
-    }*/
+    }
 
     public Iterable<Pembiayaan> findAll(){
         return pembiayaanRepo.findAll();
