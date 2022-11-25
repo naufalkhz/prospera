@@ -2,6 +2,7 @@ package com.prospera.corebanking.controllers;
 
 
 import com.prospera.corebanking.dto.models.entities.Nasabah;
+import com.prospera.corebanking.dto.models.entities.Officer;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.response.ResponseData;
 import com.prospera.corebanking.services.NasabahService;
@@ -49,16 +50,26 @@ public class NasabahController {
     ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping
-    public Iterable<Nasabah> findAll(){
-        return nasabahService.findAll();
+    public ResponseEntity<ResponseData<Iterable<Nasabah>>> findAll(){
+        ResponseData<Iterable<Nasabah>> responseData = new ResponseData<>();
+        Iterable<Nasabah> nasabah = nasabahService.findAll();
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+
+        return ResponseEntity.ok(responseData);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/{nikKtp}")
-    public Nasabah findNasabahByNikKtp(@PathVariable("nikKtp") Long nikKtp){
-        return nasabahService.findByNikKtp(nikKtp);
+    public ResponseEntity<ResponseData<Nasabah>> findOne(@PathVariable("nikKtp") Long nikKtp){
+        ResponseData<Nasabah> responseData = new ResponseData<>();
+        Nasabah nasabah = nasabahService.findByNikKtp(nikKtp);
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+
+        return ResponseEntity.ok(responseData);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

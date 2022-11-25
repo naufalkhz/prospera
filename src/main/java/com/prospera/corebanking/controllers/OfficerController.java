@@ -62,8 +62,13 @@ public class OfficerController {
     ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/{nikKaryawan}")
-    public Officer findOfficerByNikKaryawan(@PathVariable("nikKaryawan") Long nikKaryawan){
-        return officerService.findByNikKaryawan(nikKaryawan);
+    public ResponseEntity<ResponseData<Officer>> findOne(@PathVariable("nikKaryawan") Long nikKaryawan){
+        ResponseData<Officer> responseData = new ResponseData<>();
+        Officer officer = officerService.findByNikKaryawan(nikKaryawan);
+        responseData.setStatus(true);
+        responseData.setPayload(officer);
+
+        return ResponseEntity.ok(responseData);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
