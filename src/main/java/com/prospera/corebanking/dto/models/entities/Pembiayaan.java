@@ -19,6 +19,9 @@ public class Pembiayaan implements Serializable {
     @Column(length = 50, nullable = false)
     private long nikKtp;
 
+    @Column(length = 50, nullable = false)
+    private String nama;
+
     @Column(length = 1, nullable = false)
     private int status;
 

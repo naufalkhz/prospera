@@ -62,8 +62,8 @@ public class UserService {
         return supplier.get();
     }*/
 
-    public User findByEmail (String email){
-        User user = userRepo.findByEmail(email);
+    public User findByEmail (String email, String password){
+        User user = userRepo.findByEmailAndPassword(email, password);
 //        if (!supplier.isPresent()){
 //            return null;
 //        }

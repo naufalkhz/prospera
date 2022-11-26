@@ -4,6 +4,7 @@ package com.prospera.corebanking.controllers;
 import com.prospera.corebanking.dto.models.entities.Tabungan;
 import com.prospera.corebanking.dto.request.TransaksiSaldo;
 import com.prospera.corebanking.dto.response.ResponseData;
+import com.prospera.corebanking.dto.response.TabunganDTO;
 import com.prospera.corebanking.services.TabunganService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/tabungan")
 public class TabunganController {
@@ -27,13 +29,14 @@ public class TabunganController {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
+    ////////////////////////////// GET ALL TABUNGAN /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
 
     @GetMapping
     public ResponseEntity<ResponseData<Iterable<Tabungan>>> findAll(){
         ResponseData<Iterable<Tabungan>> responseData = new ResponseData<>();
         Iterable<Tabungan> tabungan = tabunganService.findAll();
+
         responseData.setStatus(true);
         responseData.setPayload(tabungan);
 

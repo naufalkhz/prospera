@@ -27,6 +27,9 @@ public class Tabungan implements Serializable {
     private long nikKtp;
 
     @Column(length = 50, nullable = false)
+    private String nama;
+
+    @Column(length = 50, nullable = false)
     private long saldo;
 
 

@@ -27,7 +27,7 @@ public class PembiayaanService {
 
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
-//        Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
+        Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
 //        System.out.println(nasabah.getAlamat());
 
 
@@ -44,11 +44,13 @@ public class PembiayaanService {
         pembiayaan.setJumlahHarusBayar(pembiayaanData.getJumlahHarusBayar());
         pembiayaan.setJumlahHarusBayarBulan(pembiayaanData.getJumlahHarusBayarBulan());
         pembiayaan.setTanggalPembiayaan(new Date());
+        pembiayaan.setNama(nasabah.getNama());
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
         Tabungan tabungan = new Tabungan();
         tabungan.setNikKtp(pembiayaanData.getNikKtp());
+        tabungan.setNama(nasabah.getNama());
         tabungan.setNoRekening(number);
         tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
 

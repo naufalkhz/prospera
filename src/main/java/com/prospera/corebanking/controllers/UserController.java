@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/login")
 public class UserController {
@@ -38,7 +39,7 @@ public class UserController {
     public ResponseEntity<ResponseData<Officer>> login (@RequestBody @Valid UserData userData, Errors errors){
         ResponseData<Officer> responseData = new ResponseData<>();
         System.out.println("Masuk");
-        User foundUser = userService.findByEmail(userData.getEmail());
+        User foundUser = userService.findByEmail(userData.getEmail(), userData.getPassword());
 
         long nik = foundUser.getNikKaryawan();
 

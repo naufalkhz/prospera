@@ -2,7 +2,6 @@ package com.prospera.corebanking.controllers;
 
 
 import com.prospera.corebanking.dto.models.entities.Nasabah;
-import com.prospera.corebanking.dto.models.entities.Officer;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.response.NasabahDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
@@ -16,7 +15,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/nasabah")
 public class NasabahController {
@@ -61,12 +60,15 @@ public class NasabahController {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
+    ////////////////////////////// GET ONE NASABAH BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/{nikKtp}")
     public ResponseEntity<ResponseData<NasabahDTO>> findOne(@PathVariable("nikKtp") Long nikKtp){
-        ResponseData<NasabahDTO> responseData = new ResponseData<>();
+        System.out.println("masuk nasabah controller");
         NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+        System.out.println(nasabah);
+        ResponseData<NasabahDTO> responseData = new ResponseData<>();
+
         responseData.setStatus(true);
         responseData.setPayload(nasabah);
 
