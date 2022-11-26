@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional
 public class NasabahService {
@@ -42,9 +44,10 @@ public class NasabahService {
         nasabah.setPekerjaan(nasabahData.getPekerjaan());
         nasabah.setAlamat(nasabahData.getAlamat());
         nasabah.setFlagWarungTepat(nasabahData.getFlagWarungTepat());
-        nasabah.setTanggalBuat(nasabahData.getTanggalBuat());
+
         nasabah.setNikKtp(nasabahData.getNikKtp());
 
+        nasabah.setTanggalBuat(new Date());
         return nasabahRepo.save(nasabah);
     }
 
