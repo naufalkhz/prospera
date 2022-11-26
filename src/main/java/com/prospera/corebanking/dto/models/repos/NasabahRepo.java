@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NasabahRepo extends JpaRepository<Nasabah, Long> {
    Nasabah findByNikKtp(Long nikKtp);
+
+   Nasabah findByNoHP(String noHP);
 }

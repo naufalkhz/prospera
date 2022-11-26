@@ -96,5 +96,25 @@ public class NasabahController {
     }
 
 
+    @PostMapping("/login")
+    public ResponseEntity<ResponseData<Nasabah>> loginNasabah (@RequestBody @Valid NasabahData nasabahData, Errors errors){
+        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP());
+        System.out.println(nasabah);
+        ResponseData<Nasabah> responseData = new ResponseData<>();
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+
+//        Nasabah nasabah = nasabahService.saveNasabah(nasabahData);
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        return ResponseEntity.ok(responseData);
+    }
+
 
 }
