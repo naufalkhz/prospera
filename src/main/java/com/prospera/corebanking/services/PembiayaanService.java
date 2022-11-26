@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -26,8 +27,8 @@ public class PembiayaanService {
 
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
-        Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
-        System.out.println(nasabah.getAlamat());
+//        Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
+//        System.out.println(nasabah.getAlamat());
 
 
 
@@ -42,7 +43,7 @@ public class PembiayaanService {
         pembiayaan.setJumlahPembiayaan(pembiayaanData.getJumlahPembiayaan());
         pembiayaan.setJumlahHarusBayar(pembiayaanData.getJumlahHarusBayar());
         pembiayaan.setJumlahHarusBayarBulan(pembiayaanData.getJumlahHarusBayarBulan());
-        pembiayaan.setTanggalPembiayaan(pembiayaanData.getTanggalPembiayaan());
+        pembiayaan.setTanggalPembiayaan(new Date());
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
