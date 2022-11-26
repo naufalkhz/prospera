@@ -86,8 +86,8 @@ public class NasabahService {
         return nasabahDTO;
     }
 
-    public Nasabah findNasabahByNomorHandphone (String noHP){
-        Nasabah nasabah = nasabahRepo.findByNoHP(noHP);
+    public Nasabah findNasabahByNomorHandphone (String noHP, String password){
+        Nasabah nasabah = nasabahRepo.findByNoHPAndPasswordAndFlagWarungTepat(noHP, password, 1);
 //        Tabungan tabungan = tabunganRepo.findByNikKtp(nikKtp);
 //        Iterable<Pembiayaan> listPembiayaan = pembiayaanRepo.findAllByNikKtp(nikKtp);
 //

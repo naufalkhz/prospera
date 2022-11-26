@@ -100,7 +100,7 @@ public class NasabahController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseData<Nasabah>> loginNasabah (@RequestBody @Valid NasabahData nasabahData, Errors errors){
-        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP());
+        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP(), nasabahData.getPassword());
         System.out.println(nasabah);
         ResponseData<Nasabah> responseData = new ResponseData<>();
         if(errors.hasErrors()){

@@ -2,9 +2,11 @@ package com.prospera.corebanking.controllers;
 
 
 import com.prospera.corebanking.dto.models.entities.Tabungan;
+import com.prospera.corebanking.dto.models.entities.TabunganHistory;
 import com.prospera.corebanking.dto.request.TransaksiSaldo;
 import com.prospera.corebanking.dto.response.ResponseData;
 import com.prospera.corebanking.dto.response.TabunganDTO;
+import com.prospera.corebanking.services.TabunganHistoryService;
 import com.prospera.corebanking.services.TabunganService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import javax.validation.Valid;
 public class TabunganController {
     @Autowired
     private TabunganService tabunganService;
+
+    @Autowired
+    private TabunganHistoryService tabunganHistoryService;
 
     @Autowired(required = true)
     private ModelMapper modelMapper;
@@ -81,7 +86,7 @@ public class TabunganController {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////// UPDATE SALDO ///////////////////////////////////////////
+    ////////////////////////////// UPDATE SALDO WARUNG //////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @PutMapping("/transaksi-saldo")
     public ResponseEntity<ResponseData<Tabungan>> updateSaldo (@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
@@ -90,6 +95,10 @@ public class TabunganController {
         Tabungan tabungan = tabunganService.findByNikKtp(transaksiSaldo.getNikKtp());
         tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
         tabunganService.update(tabungan);
+
+        tabunganHistoryService.saveTransaksi(tabungan.getNoRekening(),"warung tepat", transaksiSaldo.getNominal());
+
+
 
         ResponseData<Tabungan> responseData = new ResponseData<>();
         if (errors.hasErrors()){
@@ -103,6 +112,17 @@ public class TabunganController {
         Tabungan updatedTabungan = modelMapper.map(tabungan, Tabungan.class);
         responseData.setStatus(true);
         responseData.setPayload(updatedTabungan);
+        return ResponseEntity.ok(responseData);
+    }
+
+    @GetMapping("/history/{norekening}")
+    public ResponseEntity<ResponseData<Iterable<TabunganHistory>>> findAllRek(@PathVariable("norekening") Long norek){
+        ResponseData<Iterable<TabunganHistory>> responseData = new ResponseData<>();
+        Iterable<TabunganHistory> tabungan = tabunganHistoryService.findHistoryRekening(norek);
+
+        responseData.setStatus(true);
+        responseData.setPayload(tabungan);
+
         return ResponseEntity.ok(responseData);
     }
 
