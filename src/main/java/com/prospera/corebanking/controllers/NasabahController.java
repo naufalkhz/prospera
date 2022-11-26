@@ -4,6 +4,7 @@ package com.prospera.corebanking.controllers;
 import com.prospera.corebanking.dto.models.entities.Nasabah;
 import com.prospera.corebanking.dto.models.entities.Officer;
 import com.prospera.corebanking.dto.request.NasabahData;
+import com.prospera.corebanking.dto.response.NasabahDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
 import com.prospera.corebanking.services.NasabahService;
 import org.modelmapper.ModelMapper;
@@ -63,9 +64,9 @@ public class NasabahController {
     ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/{nikKtp}")
-    public ResponseEntity<ResponseData<Nasabah>> findOne(@PathVariable("nikKtp") Long nikKtp){
-        ResponseData<Nasabah> responseData = new ResponseData<>();
-        Nasabah nasabah = nasabahService.findByNikKtp(nikKtp);
+    public ResponseEntity<ResponseData<NasabahDTO>> findOne(@PathVariable("nikKtp") Long nikKtp){
+        ResponseData<NasabahDTO> responseData = new ResponseData<>();
+        NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
         responseData.setStatus(true);
         responseData.setPayload(nasabah);
 

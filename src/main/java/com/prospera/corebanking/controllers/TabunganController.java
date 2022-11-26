@@ -2,6 +2,7 @@ package com.prospera.corebanking.controllers;
 
 
 import com.prospera.corebanking.dto.models.entities.Officer;
+import com.prospera.corebanking.dto.models.entities.Pembiayaan;
 import com.prospera.corebanking.dto.models.entities.Tabungan;
 import com.prospera.corebanking.dto.request.OfficerData;
 import com.prospera.corebanking.dto.response.ResponseData;
@@ -31,17 +32,29 @@ public class TabunganController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
+
     @GetMapping
-    public Iterable<Tabungan> findAll(){
-        return tabunganService.findAll();
+    public ResponseEntity<ResponseData<Iterable<Tabungan>>> findAll(){
+        ResponseData<Iterable<Tabungan>> responseData = new ResponseData<>();
+        Iterable<Tabungan> tabungan = tabunganService.findAll();
+        responseData.setStatus(true);
+        responseData.setPayload(tabungan);
+
+        return ResponseEntity.ok(responseData);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
+
     @GetMapping("/{norekening}")
-    public Tabungan findByNoRekening(@PathVariable("noRekening") Long noRekening){
-        return tabunganService.findByNoRekening(noRekening);
+    public ResponseEntity<ResponseData<Tabungan>> findTabunganByNoRekening(@PathVariable("norekening") Long norek){
+        ResponseData<Tabungan> responseData = new ResponseData<>();
+        Tabungan pembiayaan = tabunganService.findByNoRekening(norek);
+        responseData.setStatus(true);
+        responseData.setPayload(pembiayaan);
+
+        return ResponseEntity.ok(responseData);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
