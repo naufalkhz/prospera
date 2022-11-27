@@ -25,36 +25,15 @@ public class OfficerService {
 
         //handler duplicate
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
-        //long number =3119296;
+        //long number =4317203;
         Officer officer = new Officer();
         //handler duplicate
         Officer officers = officerRepo.findByNikKaryawan(number);
-        long petName;
-
-        /*if(!officers.isEmpty()){
-            //do something if a person with the test email already exists in the repository
-            System.out.println("dae nih");
-            officer.setEmail(number+"@btpns.com");
-            officer.setPassword(officerData.getPassword());
-
-            officer.setNikKaryawan(number);
-
-            officer.setNama(officerData.getNama());
-            officer.setAlamat(officerData.getAlamat());
-            officer.setJabatan(officerData.getJabatan());
-
-            officer.setTanggalLahir(officerData.getTanggalLahir());
-            officer.setNikKtp(officerData.getNikKtp());
-            officer.setCabang(officerData.getCabang());
-            officer.setStatus(1);
-            return officerRepo.save(officer);
-        }*/
-       /* if(!officers.isPresent()){
-            petName=officers.getNikKtp();
-            return null;
-        }else{*/
-
-
+        while(officers != null){
+            // membuat kembali no rekening
+            number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            break;
+        }
         officer.setEmail(number+"@btpns.com");
         officer.setPassword(officerData.getPassword());
 

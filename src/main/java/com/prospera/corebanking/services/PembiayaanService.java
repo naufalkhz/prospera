@@ -60,8 +60,9 @@ public class PembiayaanService {
         Tabungan existingRekening = tabunganRepo.findByNoRekening(number);
         if (existingTabungan == null){
             System.out.println("membuat rekening baru");
-            if(existingRekening != null){
+            while(existingRekening != null){
                 number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                break;
             }
             Tabungan tabungan = new Tabungan();
             tabungan.setNikKtp(pembiayaanData.getNikKtp());
