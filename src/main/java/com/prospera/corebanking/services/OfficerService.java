@@ -30,7 +30,8 @@ public class OfficerService {
         //handler duplicate
         Officer officers = officerRepo.findByNikKaryawan(number);
         long petName;
-        if(!officers.isEmpty()){
+
+        /*if(!officers.isEmpty()){
             //do something if a person with the test email already exists in the repository
             System.out.println("dae nih");
             officer.setEmail(number+"@btpns.com");
@@ -47,7 +48,7 @@ public class OfficerService {
             officer.setCabang(officerData.getCabang());
             officer.setStatus(1);
             return officerRepo.save(officer);
-        }
+        }*/
        /* if(!officers.isPresent()){
             petName=officers.getNikKtp();
             return null;

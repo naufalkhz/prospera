@@ -1,18 +1,14 @@
 package com.prospera.corebanking.services;
 
-import com.prospera.corebanking.dto.models.entities.Nasabah;
-import com.prospera.corebanking.dto.models.entities.Pembiayaan;
-import com.prospera.corebanking.dto.models.entities.Tabungan;
-import com.prospera.corebanking.dto.models.entities.TabunganHistory;
-import com.prospera.corebanking.dto.models.repos.NasabahRepo;
-import com.prospera.corebanking.dto.models.repos.PembiayaanRepo;
-import com.prospera.corebanking.dto.models.repos.TabunganHistoryRepo;
-import com.prospera.corebanking.dto.models.repos.TabunganRepo;
+import com.prospera.corebanking.dto.models.entities.*;
+import com.prospera.corebanking.dto.models.repos.*;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.request.PembiayaanData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 
 import java.util.Date;
 import java.util.Optional;
@@ -33,6 +29,7 @@ public class PembiayaanService {
 
     @Autowired
     private TabunganHistoryService tabunganHistoryService;
+    
 
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
@@ -48,6 +45,7 @@ public class PembiayaanService {
         Pembiayaan pembiayaan = new Pembiayaan();
 
         pembiayaan.setNikKtp(pembiayaanData.getNikKtp());
+        long ceknik = pembiayaanData.getNikKtp();
         pembiayaan.setStatus(pembiayaanData.getStatus());
         pembiayaan.setJumlahPembiayaan(pembiayaanData.getJumlahPembiayaan());
         pembiayaan.setJumlahHarusBayar(pembiayaanData.getJumlahHarusBayar());
@@ -56,7 +54,28 @@ public class PembiayaanService {
         pembiayaan.setNama(nasabah.getNama());
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
-        long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
+        Tabungan insertTabungan = tabunganRepo.findByNikKtp(ceknik);
+        //if(tabunganRepo.findByNikKtp(pembiayaanData.getNikKtp()) != null)throw new RuntimeException("Record already  exist");
+        if (insertTabungan == null){
+            long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
+            Tabungan tabungan = new Tabungan();
+            tabungan.setNikKtp(pembiayaanData.getNikKtp());
+            tabungan.setNama(nasabah.getNama());
+            tabungan.setNoRekening(number);
+            tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
+
+            // Buat History Tabungan
+            tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
+            System.out.println(tabungan);
+            tabunganRepo.save(tabungan);
+           /* System.out.println("gadaa");
+            throw new RuntimeException("Supplier tidak ditemukan !");*/
+        }else {
+            System.out.println("udah ada");
+        }
+        //long id = insertTabungan.getIdSupplier();
+
+       /* long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
         Tabungan tabungan = new Tabungan();
         tabungan.setNikKtp(pembiayaanData.getNikKtp());
         tabungan.setNama(nasabah.getNama());
@@ -64,10 +83,9 @@ public class PembiayaanService {
         tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
 
         // Buat History Tabungan
-        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
+        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());*/
 
-        System.out.println(tabungan);
-        tabunganRepo.save(tabungan);
+
 
         return pembiayaanRepo.save(pembiayaan);
     }

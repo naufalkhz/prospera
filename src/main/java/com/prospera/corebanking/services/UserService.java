@@ -27,7 +27,6 @@ public class UserService {
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
         Officer officer = new Officer();
 
-
         officer.setEmail(number+"@btpns.com");
         officer.setPassword(officerData.getPassword());
 
@@ -64,7 +63,7 @@ public class UserService {
 
     public User findByEmail (String email, String password){
         User user = userRepo.findByEmailAndPassword(email, password);
-//        if (!supplier.isPresent()){
+//        if (!supplier`.isPresent`()){
 //            return null;
 //        }
         return user;
