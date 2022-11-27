@@ -11,4 +11,5 @@ public class ResponseDataTerra<T> {
     private List<String> messages = new ArrayList<>();
     private T payload;
     private long noRekening;
+    private NasabahDTO nasabah;
 }
