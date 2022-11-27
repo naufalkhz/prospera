@@ -115,6 +115,33 @@ public class TabunganController {
         return ResponseEntity.ok(responseData);
     }
 
+    @PutMapping("/transaksi-saldo/{nikKtp}")
+    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("norekening") Long norek,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
+
+        System.out.println(transaksiSaldo);
+        Tabungan tabungan = tabunganService.findByNikKtp(norek);
+        tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
+        tabunganService.update(tabungan);
+
+        tabunganHistoryService.saveTransaksi(tabungan.getNoRekening(),"terra", transaksiSaldo.getNominal());
+
+
+
+        ResponseData<Tabungan> responseData = new ResponseData<>();
+        if (errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+        Tabungan updatedTabungan = modelMapper.map(tabungan, Tabungan.class);
+        responseData.setStatus(true);
+        responseData.setPayload(updatedTabungan);
+        return ResponseEntity.ok(responseData);
+    }
+
     @GetMapping("/history/{norekening}")
     public ResponseEntity<ResponseData<Iterable<TabunganHistory>>> findAllRek(@PathVariable("norekening") Long norek){
         ResponseData<Iterable<TabunganHistory>> responseData = new ResponseData<>();

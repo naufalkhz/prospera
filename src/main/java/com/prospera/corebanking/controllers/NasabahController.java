@@ -9,6 +9,7 @@ import com.prospera.corebanking.services.NasabahService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -98,8 +99,9 @@ public class NasabahController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<ResponseData<Nasabah>> loginNasabah (@RequestBody @Valid NasabahData nasabahData, Errors errors){
+    @PostMapping(value = "/login-warung-tepat", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces =MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseData<Nasabah>> loginNasabahurlencoded (@Valid NasabahData nasabahData, Errors errors){
         Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP(), nasabahData.getPassword());
         System.out.println(nasabah);
         ResponseData<Nasabah> responseData = new ResponseData<>();
@@ -118,5 +120,25 @@ public class NasabahController {
         return ResponseEntity.ok(responseData);
     }
 
+    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces =MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseData<Nasabah>> loginNasabahJson (@RequestBody @Valid NasabahData nasabahData, Errors errors){
+        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP(), nasabahData.getPassword());
+        System.out.println(nasabah);
+        ResponseData<Nasabah> responseData = new ResponseData<>();
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+
+//        Nasabah nasabah = nasabahService.saveNasabah(nasabahData);
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        return ResponseEntity.ok(responseData);
+    }
 
 }
