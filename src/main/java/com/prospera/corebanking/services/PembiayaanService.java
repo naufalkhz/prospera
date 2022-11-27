@@ -36,6 +36,7 @@ public class PembiayaanService {
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
         Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
+        Tabungan existingTabungan = tabunganRepo.findByNikKtp(pembiayaanData.getNikKtp());
 //        System.out.println(nasabah.getAlamat());
 
 
@@ -56,18 +57,32 @@ public class PembiayaanService {
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
-        Tabungan tabungan = new Tabungan();
-        tabungan.setNikKtp(pembiayaanData.getNikKtp());
-        tabungan.setNama(nasabah.getNama());
-        tabungan.setNoRekening(number);
-        tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
 
-        // Buat History Tabungan
+        if (existingTabungan == null){
+            System.out.println("bikin rekening baru");
+            Tabungan tabungan = new Tabungan();
+            tabungan.setNikKtp(pembiayaanData.getNikKtp());
+            tabungan.setNama(nasabah.getNama());
+            tabungan.setNoRekening(number);
+            tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
+
+            // Buat History Tabungan
+
+            System.out.println(tabungan);
+            tabunganRepo.save(tabungan);
+        }
+
+        if(existingTabungan != null) {
+            System.out.println("tambahin saldo ke rekening yang udah ada");
+//            Tabungan existingTabungan = tabunganRepo.findByNikKtp(nasabah.getNikKtp());
+            existingTabungan.setSaldo(existingTabungan.getSaldo() + pembiayaanData.getJumlahPembiayaan());
+            tabunganRepo.save(existingTabungan);
+        }
+
+//        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
+
+
         tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
-
-        System.out.println(tabungan);
-        tabunganRepo.save(tabungan);
-
         return pembiayaanRepo.save(pembiayaan);
     }
 

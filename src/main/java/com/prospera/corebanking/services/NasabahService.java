@@ -67,7 +67,7 @@ public class NasabahService {
         nasabahDTO.setNoRekening(tabungan.getNoRekening());
 
         nasabahDTO.setPembiayaan(listPembiayaan);
-
+        nasabahDTO.setId(nasabah.getId());
         nasabahDTO.setNama(nasabah.getNama());
         nasabahDTO.setNikKtp(nasabah.getNikKtp());
         nasabahDTO.setEmail(nasabah.getEmail());

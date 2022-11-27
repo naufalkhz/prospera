@@ -67,7 +67,9 @@ public class NasabahController {
     @GetMapping("/{nikKtp}")
     public ResponseEntity<ResponseData<NasabahDTO>> findOne(@PathVariable("nikKtp") Long nikKtp){
         System.out.println("masuk nasabah controller");
+//        Nasabah existingNasabah = nasabahService.findByNikKtp(nikKtp);
         NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+
         System.out.println(nasabah);
         ResponseData<NasabahDTO> responseData = new ResponseData<>();
 
