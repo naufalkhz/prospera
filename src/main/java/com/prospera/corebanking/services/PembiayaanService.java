@@ -29,7 +29,7 @@ public class PembiayaanService {
 
     @Autowired
     private TabunganHistoryService tabunganHistoryService;
-    
+
 
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
