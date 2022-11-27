@@ -20,7 +20,7 @@ public class Tabungan implements Serializable {
 //    @Column(length = 50, nullable = false)
 //    private long nikKtp;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private long noRekening;
 
     @Column(length = 50, nullable = false)

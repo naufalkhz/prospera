@@ -17,13 +17,13 @@ public class Pembiayaan implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private long nikKtp;
 
     @Column(length = 50)
     private String nama;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private long noPembiayaan;
 
     @Column(length = 1, nullable = false)

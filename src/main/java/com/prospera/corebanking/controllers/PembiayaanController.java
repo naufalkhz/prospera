@@ -8,6 +8,7 @@ import com.prospera.corebanking.dto.models.entities.Tabungan;
 import com.prospera.corebanking.dto.request.OfficerData;
 import com.prospera.corebanking.dto.request.PembiayaanData;
 import com.prospera.corebanking.dto.response.ResponseData;
+import com.prospera.corebanking.dto.response.ResponseDataTerraPembiayaan;
 import com.prospera.corebanking.services.OfficerService;
 import com.prospera.corebanking.services.PembiayaanService;
 import org.modelmapper.ModelMapper;
@@ -68,12 +69,24 @@ public class PembiayaanController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ONE PEMBIAYAAN BY ID /////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseData<Pembiayaan>> findPembiayaanByID(@PathVariable("id") Long id){
+    @GetMapping("/{noPembiayaan}")
+    public ResponseEntity<ResponseData<Pembiayaan>> findPembiayaanByID(@PathVariable("noPembiayaan") Long noPembiayaan){
         ResponseData<Pembiayaan> responseData = new ResponseData<>();
+        Pembiayaan pembiayaan = pembiayaanService.findOne(noPembiayaan);
+        responseData.setStatus(true);
+        responseData.setPayload(pembiayaan);
+
+        return ResponseEntity.ok(responseData);
+    }
+
+    @GetMapping("/terra/{id}")
+    public ResponseEntity<ResponseDataTerraPembiayaan<Pembiayaan>> findPembiayaanByIDTerra(@PathVariable("id") Long id){
+        ResponseDataTerraPembiayaan<Pembiayaan> responseData = new ResponseDataTerraPembiayaan<>();
         Pembiayaan pembiayaan = pembiayaanService.findOne(id);
         responseData.setStatus(true);
         responseData.setPayload(pembiayaan);
+        responseData.setPembiayaan(pembiayaan );
+
 
         return ResponseEntity.ok(responseData);
     }

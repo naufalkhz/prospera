@@ -106,11 +106,11 @@ public class PembiayaanService {
     }
 
     public Pembiayaan findOne (Long id){
-        Optional<Pembiayaan> pembiayaan = pembiayaanRepo.findById(id);
-        if (!pembiayaan.isPresent()){
-            return null;
-        }
-        return pembiayaan.get();
+        Pembiayaan pembiayaan = pembiayaanRepo.findByNoPembiayaan(id);
+//        if (!pembiayaan.isPresent()){
+//            return null;
+//        }
+        return pembiayaan;
     }
 
     /*public Tabungan findByNoRekening (Long noRekening){
