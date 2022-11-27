@@ -23,6 +23,9 @@ public class Pembiayaan implements Serializable {
     @Column(length = 50)
     private String nama;
 
+    @Column(length = 50, nullable = false)
+    private long noPembiayaan;
+
     @Column(length = 1, nullable = false)
     private int status;
 

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PembiayaanRepo extends JpaRepository<Pembiayaan, Long> {
     Iterable<Pembiayaan> findAllByNikKtp(Long nikKtp);
+    Pembiayaan findByNoPembiayaan(Long noPembiayaan);
 }

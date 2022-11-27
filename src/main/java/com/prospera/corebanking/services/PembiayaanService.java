@@ -1,9 +1,6 @@
 package com.prospera.corebanking.services;
 
-import com.prospera.corebanking.dto.models.entities.Nasabah;
-import com.prospera.corebanking.dto.models.entities.Pembiayaan;
-import com.prospera.corebanking.dto.models.entities.Tabungan;
-import com.prospera.corebanking.dto.models.entities.TabunganHistory;
+import com.prospera.corebanking.dto.models.entities.*;
 import com.prospera.corebanking.dto.models.repos.NasabahRepo;
 import com.prospera.corebanking.dto.models.repos.PembiayaanRepo;
 import com.prospera.corebanking.dto.models.repos.TabunganHistoryRepo;
@@ -37,6 +34,7 @@ public class PembiayaanService {
 
         Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
         Tabungan existingTabungan = tabunganRepo.findByNikKtp(pembiayaanData.getNikKtp());
+
 //        System.out.println(nasabah.getAlamat());
 
 
@@ -48,18 +46,39 @@ public class PembiayaanService {
         Pembiayaan pembiayaan = new Pembiayaan();
 
         pembiayaan.setNikKtp(pembiayaanData.getNikKtp());
+        pembiayaan.setNama(nasabah.getNama());
+
+        long nomorPembiayaan = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+        Pembiayaan existNoPembiayaan = pembiayaanRepo.findByNoPembiayaan(nomorPembiayaan);
+        while(existNoPembiayaan != null){
+            // membuat kembali no rekening
+            nomorPembiayaan = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            Pembiayaan cekNoPembiayaan = pembiayaanRepo.findByNoPembiayaan(nomorPembiayaan);
+            if(cekNoPembiayaan != null){
+                // cek kembali no rekening
+                nomorPembiayaan = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                break;}
+        }
+
+        pembiayaan.setNoPembiayaan(nomorPembiayaan);
         pembiayaan.setStatus(pembiayaanData.getStatus());
         pembiayaan.setJumlahPembiayaan(pembiayaanData.getJumlahPembiayaan());
         pembiayaan.setJumlahHarusBayar(pembiayaanData.getJumlahHarusBayar());
         pembiayaan.setJumlahHarusBayarBulan(pembiayaanData.getJumlahHarusBayarBulan());
         pembiayaan.setTanggalPembiayaan(new Date());
-        pembiayaan.setNama(nasabah.getNama());
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
-
+        Tabungan existingRekening = tabunganRepo.findByNoRekening(number);
         if (existingTabungan == null){
-            System.out.println("bikin rekening baru");
+            System.out.println("membuat rekening baru");
+            while(existingRekening != null){
+                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                Tabungan cekexistingRekening = tabunganRepo.findByNoRekening(number);
+                if(cekexistingRekening != null){
+                    number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                    break;}
+            }
             Tabungan tabungan = new Tabungan();
             tabungan.setNikKtp(pembiayaanData.getNikKtp());
             tabungan.setNama(nasabah.getNama());
@@ -73,7 +92,7 @@ public class PembiayaanService {
         }
 
         if(existingTabungan != null) {
-            System.out.println("tambahin saldo ke rekening yang udah ada");
+            System.out.println("tambah saldo ke rekening yang udah ada");
 //            Tabungan existingTabungan = tabunganRepo.findByNikKtp(nasabah.getNikKtp());
             existingTabungan.setSaldo(existingTabungan.getSaldo() + pembiayaanData.getJumlahPembiayaan());
             tabunganRepo.save(existingTabungan);

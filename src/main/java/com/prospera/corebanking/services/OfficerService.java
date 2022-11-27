@@ -25,9 +25,19 @@ public class OfficerService {
 
         //handler duplicate
         long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+        //long number =4317203;
         Officer officer = new Officer();
-
-
+        //handler duplicate
+        Officer officers = officerRepo.findByNikKaryawan(number);
+        while(officers != null){
+            // membuat kembali no rekening
+            number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            Officer cekofficers = officerRepo.findByNikKaryawan(number);
+            if(cekofficers != null){
+                // cek kembali no rekening
+                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                break;}
+        }
         officer.setEmail(number+"@btpns.com");
         officer.setPassword(officerData.getPassword());
 
