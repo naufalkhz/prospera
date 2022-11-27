@@ -19,6 +19,13 @@ public class TabunganService {
 //        }
         return tabungan;
     }
+    public Tabungan findByNikKtp (Long nikKtp){
+        Tabungan tabungan = tabunganRepo.findByNikKtp(nikKtp);
+//        if (!supplier.isPresent()){
+//            return null;
+//        }
+        return tabungan;
+    }
 
     public Tabungan update (Tabungan tabungan){
         return tabunganRepo.save(tabungan);

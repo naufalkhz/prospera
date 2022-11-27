@@ -1,12 +1,12 @@
 package com.prospera.corebanking.controllers;
 
 
-import com.prospera.corebanking.dto.models.entities.Officer;
-import com.prospera.corebanking.dto.models.entities.Pembiayaan;
 import com.prospera.corebanking.dto.models.entities.Tabungan;
-import com.prospera.corebanking.dto.request.OfficerData;
+import com.prospera.corebanking.dto.models.entities.TabunganHistory;
+import com.prospera.corebanking.dto.request.TransaksiSaldo;
 import com.prospera.corebanking.dto.response.ResponseData;
-import com.prospera.corebanking.services.OfficerService;
+import com.prospera.corebanking.dto.response.TabunganDTO;
+import com.prospera.corebanking.services.TabunganHistoryService;
 import com.prospera.corebanking.services.TabunganService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/tabungan")
 public class TabunganController {
     @Autowired
     private TabunganService tabunganService;
+
+    @Autowired
+    private TabunganHistoryService tabunganHistoryService;
 
     @Autowired(required = true)
     private ModelMapper modelMapper;
@@ -30,13 +34,14 @@ public class TabunganController {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
+    ////////////////////////////// GET ALL TABUNGAN /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
 
     @GetMapping
     public ResponseEntity<ResponseData<Iterable<Tabungan>>> findAll(){
         ResponseData<Iterable<Tabungan>> responseData = new ResponseData<>();
         Iterable<Tabungan> tabungan = tabunganService.findAll();
+
         responseData.setStatus(true);
         responseData.setPayload(tabungan);
 
@@ -79,5 +84,73 @@ public class TabunganController {
         return ResponseEntity.ok(responseData);
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// UPDATE SALDO WARUNG //////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    @PutMapping("/transaksi-saldo")
+    public ResponseEntity<ResponseData<Tabungan>> updateSaldo (@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
+
+        System.out.println(transaksiSaldo);
+        Tabungan tabungan = tabunganService.findByNikKtp(transaksiSaldo.getNikKtp());
+        tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
+        tabunganService.update(tabungan);
+
+        tabunganHistoryService.saveTransaksi(tabungan.getNoRekening(),"warung tepat", transaksiSaldo.getNominal());
+
+
+
+        ResponseData<Tabungan> responseData = new ResponseData<>();
+        if (errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+        Tabungan updatedTabungan = modelMapper.map(tabungan, Tabungan.class);
+        responseData.setStatus(true);
+        responseData.setPayload(updatedTabungan);
+        return ResponseEntity.ok(responseData);
+    }
+
+    @PutMapping("/transaksi-saldo/{nikKtp}")
+    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("norekening") Long norek,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
+
+        System.out.println(transaksiSaldo);
+        Tabungan tabungan = tabunganService.findByNikKtp(norek);
+        tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
+        tabunganService.update(tabungan);
+
+        tabunganHistoryService.saveTransaksi(tabungan.getNoRekening(),"terra", transaksiSaldo.getNominal());
+
+
+
+        ResponseData<Tabungan> responseData = new ResponseData<>();
+        if (errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+        Tabungan updatedTabungan = modelMapper.map(tabungan, Tabungan.class);
+        responseData.setStatus(true);
+        responseData.setPayload(updatedTabungan);
+        return ResponseEntity.ok(responseData);
+    }
+
+    @GetMapping("/history/{norekening}")
+    public ResponseEntity<ResponseData<Iterable<TabunganHistory>>> findAllRek(@PathVariable("norekening") Long norek){
+        ResponseData<Iterable<TabunganHistory>> responseData = new ResponseData<>();
+        Iterable<TabunganHistory> tabungan = tabunganHistoryService.findHistoryRekening(norek);
+
+        responseData.setStatus(true);
+        responseData.setPayload(tabungan);
+
+        return ResponseEntity.ok(responseData);
+    }
 
 }

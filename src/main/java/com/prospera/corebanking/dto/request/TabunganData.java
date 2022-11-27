@@ -12,4 +12,5 @@ public class TabunganData {
     private long nikKtp;
     private long noRekening;
     private long saldo;
+    private String nama;
 }

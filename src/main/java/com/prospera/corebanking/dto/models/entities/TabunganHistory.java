@@ -9,9 +9,9 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "tabungan")
+@Table(name = "tabungan_history")
 @DynamicUpdate
-public class Tabungan implements Serializable {
+public class TabunganHistory implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +21,17 @@ public class Tabungan implements Serializable {
 //    private long nikKtp;
 
     @Column(length = 50, nullable = false)
+    private long mutasi;
+
+    @Column(length = 50, nullable = false)
+    private String keterangan;
+
+    @Column(length = 50, nullable = false)
     private long noRekening;
 
     @Column(length = 50, nullable = false)
-    private long nikKtp;
-
-    @Column(length = 50, nullable = false)
-    private String nama;
-
-    @Column(length = 50, nullable = false)
-    private long saldo;
+    @Temporal(TemporalType.DATE)
+    private Date tanggalTransaksi;
 
 
 

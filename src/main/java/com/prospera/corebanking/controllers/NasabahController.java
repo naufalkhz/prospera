@@ -2,7 +2,6 @@ package com.prospera.corebanking.controllers;
 
 
 import com.prospera.corebanking.dto.models.entities.Nasabah;
-import com.prospera.corebanking.dto.models.entities.Officer;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.response.NasabahDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
@@ -10,13 +9,14 @@ import com.prospera.corebanking.services.NasabahService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/nasabah")
 public class NasabahController {
@@ -61,12 +61,15 @@ public class NasabahController {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////// GET ONE OFFICER BY NIK ///////////////////////////////////
+    ////////////////////////////// GET ONE NASABAH BY NIK ///////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/{nikKtp}")
     public ResponseEntity<ResponseData<NasabahDTO>> findOne(@PathVariable("nikKtp") Long nikKtp){
-        ResponseData<NasabahDTO> responseData = new ResponseData<>();
+        System.out.println("masuk nasabah controller");
         NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+        System.out.println(nasabah);
+        ResponseData<NasabahDTO> responseData = new ResponseData<>();
+
         responseData.setStatus(true);
         responseData.setPayload(nasabah);
 
@@ -96,5 +99,46 @@ public class NasabahController {
     }
 
 
+    @PostMapping(value = "/login-warung-tepat", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces =MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseData<Nasabah>> loginNasabahurlencoded (@Valid NasabahData nasabahData, Errors errors){
+        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP(), nasabahData.getPassword());
+        System.out.println(nasabah);
+        ResponseData<Nasabah> responseData = new ResponseData<>();
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+
+//        Nasabah nasabah = nasabahService.saveNasabah(nasabahData);
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        return ResponseEntity.ok(responseData);
+    }
+
+    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces =MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseData<Nasabah>> loginNasabahJson (@RequestBody @Valid NasabahData nasabahData, Errors errors){
+        Nasabah nasabah = nasabahService.findNasabahByNomorHandphone(nasabahData.getNoHP(), nasabahData.getPassword());
+        System.out.println(nasabah);
+        ResponseData<Nasabah> responseData = new ResponseData<>();
+        if(errors.hasErrors()){
+            for(ObjectError error : errors.getAllErrors()){
+                responseData.getMessages().add(error.getDefaultMessage());
+            }
+            responseData.setStatus(false);
+            responseData.setPayload(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
+        }
+
+//        Nasabah nasabah = nasabahService.saveNasabah(nasabahData);
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        return ResponseEntity.ok(responseData);
+    }
 
 }

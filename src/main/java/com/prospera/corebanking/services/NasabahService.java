@@ -86,6 +86,39 @@ public class NasabahService {
         return nasabahDTO;
     }
 
+    public Nasabah findNasabahByNomorHandphone (String noHP, String password){
+        Nasabah nasabah = nasabahRepo.findByNoHPAndPasswordAndFlagWarungTepat(noHP, password, 1);
+//        Tabungan tabungan = tabunganRepo.findByNikKtp(nikKtp);
+//        Iterable<Pembiayaan> listPembiayaan = pembiayaanRepo.findAllByNikKtp(nikKtp);
+//
+//        System.out.println(nasabah);
+//        System.out.println(listPembiayaan);
+//
+//        NasabahDTO nasabahDTO = new NasabahDTO();
+//
+//        nasabahDTO.setSaldo(tabungan.getSaldo());
+//        nasabahDTO.setNoRekening(tabungan.getNoRekening());
+//
+//        nasabahDTO.setPembiayaan(listPembiayaan);
+//
+//        nasabahDTO.setNama(nasabah.getNama());
+//        nasabahDTO.setNikKtp(nasabah.getNikKtp());
+//        nasabahDTO.setEmail(nasabah.getEmail());
+//        nasabahDTO.setPekerjaan(nasabah.getPekerjaan());
+//        nasabahDTO.setPassword(nasabah.getPassword());
+//        nasabahDTO.setNoHP(nasabah.getNoHP());
+//        nasabahDTO.setAlamat(nasabah.getAlamat());
+//        nasabahDTO.setFlagWarungTepat(nasabah.getFlagWarungTepat());
+//        nasabahDTO.setTanggalBuat(nasabah.getTanggalBuat());
+
+
+
+//        if (!supplier.isPresent()){
+//            return null;
+//        }
+        return nasabah;
+    }
+
     public Nasabah update (Nasabah nasabah){
         return nasabahRepo.save(nasabah);
     }

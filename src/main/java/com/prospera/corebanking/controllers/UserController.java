@@ -11,6 +11,7 @@ import com.prospera.corebanking.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/login")
 public class UserController {
@@ -38,7 +40,7 @@ public class UserController {
     public ResponseEntity<ResponseData<Officer>> login (@RequestBody @Valid UserData userData, Errors errors){
         ResponseData<Officer> responseData = new ResponseData<>();
         System.out.println("Masuk");
-        User foundUser = userService.findByEmail(userData.getEmail());
+        User foundUser = userService.findByEmail(userData.getEmail(), userData.getPassword());
 
         long nik = foundUser.getNikKaryawan();
 

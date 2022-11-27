@@ -8,6 +8,7 @@ import java.util.Date;
 public class PembiayaanData {
 
     private long nikKtp;
+    private String nama;
     private int status;
     private long jumlahPembiayaan;
     private long jumlahHarusBayar;
