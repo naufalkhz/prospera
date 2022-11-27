@@ -5,6 +5,7 @@ import com.prospera.corebanking.dto.models.entities.Nasabah;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.response.NasabahDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
+import com.prospera.corebanking.dto.response.ResponseDataTerra;
 import com.prospera.corebanking.services.NasabahService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class NasabahController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// CREATE NASABAH ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ResponseData<Nasabah>> create (@RequestBody @Valid NasabahData nasabahData, Errors errors){
         ResponseData<Nasabah> responseData = new ResponseData<>();
         if(errors.hasErrors()){
@@ -50,7 +51,7 @@ public class NasabahController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseData<Iterable<Nasabah>>> findAll(){
         ResponseData<Iterable<Nasabah>> responseData = new ResponseData<>();
         Iterable<Nasabah> nasabah = nasabahService.findAll();
@@ -66,7 +67,9 @@ public class NasabahController {
     @GetMapping("/{nikKtp}")
     public ResponseEntity<ResponseData<NasabahDTO>> findOne(@PathVariable("nikKtp") Long nikKtp){
         System.out.println("masuk nasabah controller");
+//        Nasabah existingNasabah = nasabahService.findByNikKtp(nikKtp);
         NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+
         System.out.println(nasabah);
         ResponseData<NasabahDTO> responseData = new ResponseData<>();
 
@@ -76,10 +79,27 @@ public class NasabahController {
         return ResponseEntity.ok(responseData);
     }
 
+    @GetMapping("/terra/{nikKtp}")
+    public ResponseEntity<ResponseDataTerra<NasabahDTO>> findOneTerra(@PathVariable("nikKtp") Long nikKtp){
+        System.out.println("terra masuk nasabah controller");
+        NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+        System.out.println(nasabah);
+        ResponseDataTerra<NasabahDTO> responseData = new ResponseDataTerra<>();
+
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        responseData.setNasabahDTO(nasabah);
+
+
+        return ResponseEntity.ok(responseData);
+    }
+
+
+
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ResponseData<Nasabah>> update (@RequestBody @Valid Nasabah nasabahData, Errors errors){
 
         System.out.println(nasabahData);

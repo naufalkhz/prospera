@@ -28,7 +28,7 @@ public class OfficerController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// CREATE OFFICER ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ResponseData<Officer>> create (@RequestBody @Valid OfficerData officerData, Errors errors){
         ResponseData<Officer> responseData = new ResponseData<>();
         if(errors.hasErrors()){
@@ -49,7 +49,7 @@ public class OfficerController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// GET ALL OFFICER //////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseData<Iterable<Officer>>> findAll(){
         ResponseData<Iterable<Officer>> responseData = new ResponseData<>();
         Iterable<Officer> officer = officerService.findAll();
@@ -75,7 +75,7 @@ public class OfficerController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ResponseData<Officer>> update (@RequestBody @Valid Officer officerData, Errors errors){
 
         System.out.println(officerData);
@@ -88,6 +88,8 @@ public class OfficerController {
             responseData.setPayload(null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+
+
         Officer officer = modelMapper.map(officerData, Officer.class);
         responseData.setStatus(true);
         responseData.setPayload(officerService.update(officer));

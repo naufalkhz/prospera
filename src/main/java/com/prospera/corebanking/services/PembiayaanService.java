@@ -34,6 +34,8 @@ public class PembiayaanService {
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
         Nasabah nasabah = nasabahRepo.findByNikKtp(pembiayaanData.getNikKtp());
+        Tabungan existingTabungan = tabunganRepo.findByNikKtp(pembiayaanData.getNikKtp());
+
 //        System.out.println(nasabah.getAlamat());
 
 
@@ -54,10 +56,13 @@ public class PembiayaanService {
         pembiayaan.setNama(nasabah.getNama());
         pembiayaan.setTenor(pembiayaanData.getTenor());
         //handler tabungan jika udah ada
-        Tabungan insertTabungan = tabunganRepo.findByNikKtp(ceknik);
-        //if(tabunganRepo.findByNikKtp(pembiayaanData.getNikKtp()) != null)throw new RuntimeException("Record already  exist");
-        if (insertTabungan == null){
-            long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
+        long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
+        Tabungan existingRekening = tabunganRepo.findByNoRekening(number);
+        if (existingTabungan == null){
+            System.out.println("membuat rekening baru");
+            if(existingRekening != null){
+                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            }
             Tabungan tabungan = new Tabungan();
             tabungan.setNikKtp(pembiayaanData.getNikKtp());
             tabungan.setNama(nasabah.getNama());
@@ -65,28 +70,22 @@ public class PembiayaanService {
             tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
 
             // Buat History Tabungan
-            tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
+
             System.out.println(tabungan);
             tabunganRepo.save(tabungan);
-           /* System.out.println("gadaa");
-            throw new RuntimeException("Supplier tidak ditemukan !");*/
-        }else {
-            System.out.println("udah ada");
         }
-        //long id = insertTabungan.getIdSupplier();
 
-       /* long number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L; //handler kalo dupolicate
-        Tabungan tabungan = new Tabungan();
-        tabungan.setNikKtp(pembiayaanData.getNikKtp());
-        tabungan.setNama(nasabah.getNama());
-        tabungan.setNoRekening(number);
-        tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
+        if(existingTabungan != null) {
+            System.out.println("tambah saldo ke rekening yang udah ada");
+//            Tabungan existingTabungan = tabunganRepo.findByNikKtp(nasabah.getNikKtp());
+            existingTabungan.setSaldo(existingTabungan.getSaldo() + pembiayaanData.getJumlahPembiayaan());
+            tabunganRepo.save(existingTabungan);
+        }
 
-        // Buat History Tabungan
-        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());*/
+//        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
 
 
-
+        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
         return pembiayaanRepo.save(pembiayaan);
     }
     /*public Tabungan findNik (Long nikKtp){

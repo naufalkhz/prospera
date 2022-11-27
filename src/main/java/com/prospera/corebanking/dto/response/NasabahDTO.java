@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class NasabahDTO {
 
+    private Long id;
     private String nama;
     private long nikKtp;
     private String email;

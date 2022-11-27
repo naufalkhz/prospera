@@ -1,5 +1,6 @@
 package com.prospera.corebanking.dto.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,7 +20,7 @@ public class Pembiayaan implements Serializable {
     @Column(length = 50, nullable = false)
     private long nikKtp;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String nama;
 
     @Column(length = 1, nullable = false)

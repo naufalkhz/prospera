@@ -37,7 +37,7 @@ public class TabunganController {
     ////////////////////////////// GET ALL TABUNGAN /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseData<Iterable<Tabungan>>> findAll(){
         ResponseData<Iterable<Tabungan>> responseData = new ResponseData<>();
         Iterable<Tabungan> tabungan = tabunganService.findAll();
@@ -65,7 +65,7 @@ public class TabunganController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ResponseData<Tabungan>> update (@RequestBody @Valid Tabungan tabunganData, Errors errors){
 
         System.out.println(tabunganData);
@@ -116,10 +116,10 @@ public class TabunganController {
     }
 
     @PutMapping("/transaksi-saldo/{nikKtp}")
-    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("norekening") Long norek,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
+    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("nikKtp") Long nik,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
 
         System.out.println(transaksiSaldo);
-        Tabungan tabungan = tabunganService.findByNikKtp(norek);
+        Tabungan tabungan = tabunganService.findByNikKtp(nik);
         tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
         tabunganService.update(tabungan);
 
