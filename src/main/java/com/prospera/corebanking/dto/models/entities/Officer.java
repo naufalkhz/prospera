@@ -3,6 +3,7 @@ package com.prospera.corebanking.dto.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -52,6 +53,10 @@ public class Officer implements Serializable {
 
     @Column
     private int status;
+
+    public boolean isEmpty() {
+        return false;
+    }
 
 //    @ManyToMany(mappedBy = "suppliers")
 //    @JsonBackReference
