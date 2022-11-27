@@ -5,6 +5,7 @@ import com.prospera.corebanking.dto.models.entities.Nasabah;
 import com.prospera.corebanking.dto.request.NasabahData;
 import com.prospera.corebanking.dto.response.NasabahDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
+import com.prospera.corebanking.dto.response.ResponseDataTerra;
 import com.prospera.corebanking.services.NasabahService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,20 @@ public class NasabahController {
 
         responseData.setStatus(true);
         responseData.setPayload(nasabah);
+
+        return ResponseEntity.ok(responseData);
+    }
+
+    @GetMapping("/terra/{nikKtp}")
+    public ResponseEntity<ResponseDataTerra<NasabahDTO>> findTerra(@PathVariable("nikKtp") Long nikKtp){
+        System.out.println("masuk nasabah controller");
+        NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
+        System.out.println(nasabah);
+        ResponseDataTerra<NasabahDTO> responseData = new ResponseDataTerra<>();
+
+        responseData.setStatus(true);
+        responseData.setPayload(nasabah);
+        responseData.setNoRekening(nasabah.getNoRekening());
 
         return ResponseEntity.ok(responseData);
     }

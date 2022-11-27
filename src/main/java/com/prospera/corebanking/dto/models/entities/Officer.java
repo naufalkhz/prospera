@@ -42,6 +42,9 @@ public class Officer implements Serializable {
     private Date tanggalLahir;
 
     @Column(length = 50, nullable = false)
+    private String tempatLahir;
+
+    @Column(length = 50, nullable = false)
     private String alamat;
 
     @Column(length = 200, nullable = false)

@@ -37,6 +37,7 @@ public class OfficerService {
         officer.setAlamat(officerData.getAlamat());
         officer.setJabatan(officerData.getJabatan());
 
+        officer.setTempatLahir(officerData.getTempatLahir());
         officer.setTanggalLahir(officerData.getTanggalLahir());
         officer.setNikKtp(officerData.getNikKtp());
         officer.setCabang(officerData.getCabang());
