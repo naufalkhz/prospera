@@ -3,8 +3,10 @@ package com.prospera.corebanking.services;
 import com.prospera.corebanking.dto.models.entities.Nasabah;
 import com.prospera.corebanking.dto.models.entities.Pembiayaan;
 import com.prospera.corebanking.dto.models.entities.Tabungan;
+import com.prospera.corebanking.dto.models.entities.TabunganHistory;
 import com.prospera.corebanking.dto.models.repos.NasabahRepo;
 import com.prospera.corebanking.dto.models.repos.PembiayaanRepo;
+import com.prospera.corebanking.dto.models.repos.TabunganHistoryRepo;
 import com.prospera.corebanking.dto.models.repos.TabunganRepo;
 import com.prospera.corebanking.dto.request.PembiayaanData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,12 @@ public class PembiayaanService {
 
     @Autowired
     private NasabahRepo nasabahRepo;
+
+    @Autowired
+    private TabunganHistoryRepo tabunganHistoryRepo;
+
+    @Autowired
+    private TabunganHistoryService tabunganHistoryService;
 
     public Pembiayaan savePembiayaan (PembiayaanData pembiayaanData){
 
@@ -53,6 +61,9 @@ public class PembiayaanService {
         tabungan.setNama(nasabah.getNama());
         tabungan.setNoRekening(number);
         tabungan.setSaldo(pembiayaanData.getJumlahPembiayaan());
+
+        // Buat History Tabungan
+        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
 
         System.out.println(tabungan);
         tabunganRepo.save(tabungan);
