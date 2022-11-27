@@ -62,6 +62,9 @@ public class PembiayaanService {
             System.out.println("membuat rekening baru");
             while(existingRekening != null){
                 number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                Tabungan cekexistingRekening = tabunganRepo.findByNoRekening(number);
+                if(cekexistingRekening != null){
+                    number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;}
                 break;
             }
             Tabungan tabungan = new Tabungan();

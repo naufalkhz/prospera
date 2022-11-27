@@ -32,6 +32,10 @@ public class OfficerService {
         while(officers != null){
             // membuat kembali no rekening
             number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            Officer cekofficers = officerRepo.findByNikKaryawan(number);
+            if(cekofficers != null){
+                // cek kembali no rekening
+                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;}
             break;
         }
         officer.setEmail(number+"@btpns.com");
