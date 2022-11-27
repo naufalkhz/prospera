@@ -88,6 +88,8 @@ public class OfficerController {
             responseData.setPayload(null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+
+
         Officer officer = modelMapper.map(officerData, Officer.class);
         responseData.setStatus(true);
         responseData.setPayload(officerService.update(officer));

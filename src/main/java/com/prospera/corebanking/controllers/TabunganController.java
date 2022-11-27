@@ -37,7 +37,7 @@ public class TabunganController {
     ////////////////////////////// GET ALL TABUNGAN /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseData<Iterable<Tabungan>>> findAll(){
         ResponseData<Iterable<Tabungan>> responseData = new ResponseData<>();
         Iterable<Tabungan> tabungan = tabunganService.findAll();
@@ -65,7 +65,7 @@ public class TabunganController {
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ResponseData<Tabungan>> update (@RequestBody @Valid Tabungan tabunganData, Errors errors){
 
         System.out.println(tabunganData);
