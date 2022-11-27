@@ -21,7 +21,7 @@ public class Officer implements Serializable {
     private long nikKaryawan;
 
 //    @Column(length = 50, nullable = false, unique = true)
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private long nikKtp;
 
     @Column(length = 50, nullable = false)
