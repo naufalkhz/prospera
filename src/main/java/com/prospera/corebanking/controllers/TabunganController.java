@@ -116,10 +116,10 @@ public class TabunganController {
     }
 
     @PutMapping("/transaksi-saldo/{nikKtp}")
-    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("norekening") Long norek,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
+    public ResponseEntity<ResponseData<Tabungan>> updateSaldoTerra (@PathVariable("nikKtp") Long nik,@RequestBody @Valid TransaksiSaldo transaksiSaldo, Errors errors){
 
         System.out.println(transaksiSaldo);
-        Tabungan tabungan = tabunganService.findByNikKtp(norek);
+        Tabungan tabungan = tabunganService.findByNikKtp(nik);
         tabungan.setSaldo(tabungan.getSaldo() + transaksiSaldo.getNominal());
         tabunganService.update(tabungan);
 

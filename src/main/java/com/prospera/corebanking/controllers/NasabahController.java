@@ -78,18 +78,21 @@ public class NasabahController {
     }
 
     @GetMapping("/terra/{nikKtp}")
-    public ResponseEntity<ResponseDataTerra<NasabahDTO>> findTerra(@PathVariable("nikKtp") Long nikKtp){
-        System.out.println("masuk nasabah controller");
+    public ResponseEntity<ResponseDataTerra<NasabahDTO>> findOneTerra(@PathVariable("nikKtp") Long nikKtp){
+        System.out.println("terra masuk nasabah controller");
         NasabahDTO nasabah = nasabahService.findByNikKtp(nikKtp);
         System.out.println(nasabah);
         ResponseDataTerra<NasabahDTO> responseData = new ResponseDataTerra<>();
 
         responseData.setStatus(true);
         responseData.setPayload(nasabah);
-        responseData.setNoRekening(nasabah.getNoRekening());
+        responseData.setNasabahDTO(nasabah);
+
 
         return ResponseEntity.ok(responseData);
     }
+
+
 
     /////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////// UPDATE OFFICER ///////////////////////////////////////////
