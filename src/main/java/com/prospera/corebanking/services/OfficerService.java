@@ -35,8 +35,8 @@ public class OfficerService {
             Officer cekofficers = officerRepo.findByNikKaryawan(number);
             if(cekofficers != null){
                 // cek kembali no rekening
-                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;}
-            break;
+                number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+            break;}
         }
         officer.setEmail(number+"@btpns.com");
         officer.setPassword(officerData.getPassword());

@@ -64,8 +64,8 @@ public class PembiayaanService {
                 number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
                 Tabungan cekexistingRekening = tabunganRepo.findByNoRekening(number);
                 if(cekexistingRekening != null){
-                    number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;}
-                break;
+                    number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L;
+                break;}
             }
             Tabungan tabungan = new Tabungan();
             tabungan.setNikKtp(pembiayaanData.getNikKtp());
