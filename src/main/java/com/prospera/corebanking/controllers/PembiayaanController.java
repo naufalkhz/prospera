@@ -7,6 +7,7 @@ import com.prospera.corebanking.dto.models.entities.Pembiayaan;
 import com.prospera.corebanking.dto.models.entities.Tabungan;
 import com.prospera.corebanking.dto.request.OfficerData;
 import com.prospera.corebanking.dto.request.PembiayaanData;
+import com.prospera.corebanking.dto.response.MessageDTO;
 import com.prospera.corebanking.dto.response.ResponseData;
 import com.prospera.corebanking.dto.response.ResponseDataTerraPembiayaan;
 import com.prospera.corebanking.services.OfficerService;
@@ -35,7 +36,7 @@ public class PembiayaanController {
     ////////////////////////////// CREATE PEMBIAYAAN ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("/create")
-    public ResponseEntity<ResponseData<Pembiayaan>> create (@RequestBody @Valid PembiayaanData pembiayaanData, Errors errors){
+    public ResponseEntity<?> create (@RequestBody @Valid PembiayaanData pembiayaanData, Errors errors){
         ResponseData<Pembiayaan> responseData = new ResponseData<>();
         if(errors.hasErrors()){
             for(ObjectError error : errors.getAllErrors()){
@@ -47,6 +48,11 @@ public class PembiayaanController {
         }
 
         Pembiayaan pembiayaan = pembiayaanService.savePembiayaan(pembiayaanData);
+        if(pembiayaan == null){
+            MessageDTO messageDTO = new MessageDTO();
+            messageDTO.setMessage("Tambah Pembiayaan Gagal");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDTO);
+        }
         responseData.setStatus(true);
         responseData.setPayload(pembiayaan);
         return ResponseEntity.ok(responseData);
