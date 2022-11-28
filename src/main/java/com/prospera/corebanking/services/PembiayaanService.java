@@ -37,7 +37,7 @@ public class PembiayaanService {
 
 //        System.out.println(nasabah.getAlamat());
 
-
+        
 
         // Buat handler jika number nya ke generate yang sama
 
@@ -88,6 +88,7 @@ public class PembiayaanService {
             // Buat History Tabungan
 
             System.out.println(tabungan);
+            tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             tabunganRepo.save(tabungan);
         }
 
@@ -95,13 +96,11 @@ public class PembiayaanService {
             System.out.println("tambah saldo ke rekening yang udah ada");
 //            Tabungan existingTabungan = tabunganRepo.findByNikKtp(nasabah.getNikKtp());
             existingTabungan.setSaldo(existingTabungan.getSaldo() + pembiayaanData.getJumlahPembiayaan());
+            tabunganHistoryService.saveTransaksi(existingTabungan.getNoRekening(), "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             tabunganRepo.save(existingTabungan);
         }
 
 //        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
-
-
-        tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
         return pembiayaanRepo.save(pembiayaan);
     }
 
