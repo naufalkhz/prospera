@@ -90,21 +90,25 @@ public class PembiayaanService {
             tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             System.out.println(tabungan);
             tabunganRepo.save(tabungan);
+            return pembiayaanRepo.save(pembiayaan);
         }
 
-        if(existingTabungan != null) {
+        Pembiayaan masihNgutang = pembiayaanRepo.findAllByNikKtpAndStatus(pembiayaanData.getNikKtp(), 1);
+        if(existingTabungan != null && masihNgutang == null) {
             System.out.println("tambah saldo ke rekening yang udah ada");
 //            Tabungan existingTabungan = tabunganRepo.findByNikKtp(nasabah.getNikKtp());
             existingTabungan.setSaldo(existingTabungan.getSaldo() + pembiayaanData.getJumlahPembiayaan());
             tabunganHistoryService.saveTransaksi(existingTabungan.getNoRekening(), "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             tabunganRepo.save(existingTabungan);
+            return pembiayaanRepo.save(pembiayaan);
+        }
+        if(existingTabungan != null && masihNgutang != null) {
+            System.out.println("bayarrrrrr");
         }
 
 //        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
-
-
-
-        return pembiayaanRepo.save(pembiayaan);
+//        Pembiayaan kosong;
+        return null;
     }
 
     public Pembiayaan findOne (Long id){
