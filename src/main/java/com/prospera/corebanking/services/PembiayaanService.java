@@ -37,7 +37,7 @@ public class PembiayaanService {
 
 //        System.out.println(nasabah.getAlamat());
 
-
+        
 
         // Buat handler jika number nya ke generate yang sama
 
@@ -87,9 +87,8 @@ public class PembiayaanService {
 
             // Buat History Tabungan
 
+            tabunganHistoryService.saveTransaksi(number, "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             System.out.println(tabungan);
-            tabunganHistoryService.saveTransaksi(existingTabungan.getNoRekening(), "pembiayaan", pembiayaanData.getJumlahPembiayaan());
-
             tabunganRepo.save(tabungan);
         }
 
@@ -100,6 +99,9 @@ public class PembiayaanService {
             tabunganHistoryService.saveTransaksi(existingTabungan.getNoRekening(), "pembiayaan", pembiayaanData.getJumlahPembiayaan());
             tabunganRepo.save(existingTabungan);
         }
+
+//        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
+
 
 
         return pembiayaanRepo.save(pembiayaan);
