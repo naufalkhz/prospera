@@ -103,7 +103,7 @@ public class PembiayaanService {
             return pembiayaanRepo.save(pembiayaan);
         }
         if(existingTabungan != null && masihNgutang != null) {
-            System.out.println("bayarrrrrr");
+            System.out.println("Ada pembiayaan yang belum lunas, segera di lunasi terlebih dahulu");
         }
 
 //        Tabungan adaTabungan = tabunganRepo.findByNoRekening()
